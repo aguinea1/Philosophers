@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:41:55 by aguinea           #+#    #+#             */
-/*   Updated: 2025/02/21 00:25:58 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/02/23 21:42:32 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_philo
 typedef struct	s_table
 {
 	int		num_philo;
+	int		full_philos;
 	int		tt_die;
 	int		tt_eat;
 	int		tt_sleep;
@@ -90,7 +91,6 @@ void	what_is_the_flag(t_philo *philo, int flag);
 //UTILS
 void	do_usleep(long ms);
 bool	is_it_dead(t_philo *philo);
-bool	get_bool(t_mtx *data, bool *any, int flag);
 long	elapsed_time(t_philo *philo);
 long	get_time_ms(void);
 void	ft_error(char *error_str, void *var);

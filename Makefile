@@ -6,7 +6,7 @@
 #    By: aguinea <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 10:28:53 by aguinea           #+#    #+#              #
-#    Updated: 2025/02/21 01:46:54 by aguinea          ###   ########.fr        #
+#    Updated: 2025/02/23 23:57:14 by aguinea          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ GREEN 			= \033[0;92m
 NAME 			= philo
 
 CC 				= cc
-CFLAGS 			= -Wall -Werror -Wextra -g -fsanitize=thread
+CFLAGS 			= -Wall -Werror -Wextra #-g -pthread -fsanitize=address
 
 MAKE_LIB 		= ar -rcs
 

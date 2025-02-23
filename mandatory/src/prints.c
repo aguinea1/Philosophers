@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:29:53 by aguinea           #+#    #+#             */
-/*   Updated: 2025/02/20 17:55:24 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/02/23 23:47:12 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,16 @@
 void	what_is_the_flag(t_philo *philo, int flag)
 {
 	char	*status;
-	
+
+	pthread_mutex_lock(&philo->table->table_mtx);
+	if (philo->table->philo_dead == true)
+	{
+		pthread_mutex_unlock(&philo->table->table_mtx);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->table->table_mtx);
 	if (flag == EAT)
 	{
-		if(get_bool(&philo->table->table_mtx, &philo->table->philo_dead, 1))
-			return ;
 		status = "is eating";
 		printf(BLUE "%-6ld %d %s\n" RESET, get_time_ms(), philo->id, status);
 	}
