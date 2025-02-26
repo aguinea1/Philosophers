@@ -6,7 +6,7 @@
 #    By: aguinea <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 10:28:53 by aguinea           #+#    #+#              #
-#    Updated: 2025/02/23 23:57:14 by aguinea          ###   ########.fr        #
+#    Updated: 2025/02/25 14:03:18 by aguinea          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,8 +42,10 @@ GREEN 			= \033[0;92m
 
 NAME 			= philo
 
+BONUS_NAME		= process
+
 CC 				= cc
-CFLAGS 			= -Wall -Werror -Wextra #-g -pthread -fsanitize=address
+CFLAGS 			= -Wall -Werror -Wextra -g -pthread -fsanitize=thread
 
 MAKE_LIB 		= ar -rcs
 
@@ -54,11 +56,13 @@ RM 				= rm -f
 #                                 PATH/TO/SRCS                                 #
 ################################################################################
 
-SRC_DIR 		= ./mandatory/src
+SRC_DIR 			= ./mandatory/src
+OBJ_DIR 			= ./mandatory/obj
+HEADER_DIR 			= ./mandatory/header
 
-OBJ_DIR 		= ./mandatory/obj
-
-HEADER_DIR 		= ./mandatory/header
+BONUS_SRC_DIR   	= ./bonus/src
+BONUS_OBJ_DIR  		= ./bonus/obj
+BONUS_HEADER_DIR 	= ./bonus/header
 
 
 ################################################################################
@@ -66,6 +70,7 @@ HEADER_DIR 		= ./mandatory/header
 ################################################################################
 
 HEADER			= $(HEADER_DIR)/philo.h
+BONUS_HEADER    = $(BONUS_HEADER_DIR)/philo_bonus.h
 
 SRCS 			= $(SRC_DIR)/main.c						\
 				  $(SRC_DIR)/parsing.c					\
@@ -73,10 +78,14 @@ SRCS 			= $(SRC_DIR)/main.c						\
 				  $(SRC_DIR)/utils.c					\
 				  $(SRC_DIR)/exit.c						\
 				  $(SRC_DIR)/monitor.c					\
-				  $(SRC_DIR)/simulation.c 
+				  $(SRC_DIR)/simulation.c				\
+				  $(SRC_DIR)/phil_actions.c
+
+BONUS_SRCS      = $(BONUS_SRC_DIR)/main.c      \
 
 
 OBJS 			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(notdir $(SRCS)))
+BONUS_OBJS      = $(patsubst %.c,$(BONUS_OBJ_DIR)/%.o,$(notdir $(BONUS_SRCS)))
 
 
 ################################################################################
@@ -85,24 +94,37 @@ OBJS 			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(notdir $(SRCS)))
 
 all					: $(NAME)
 
+bonus				: $(BONUS_NAME)
 
 $(NAME)				: $(OBJS)
 					@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 					@echo "\n$(PINK)[ＯＫ✔]		➤➤		$(GREEN)executable created$(DEF_COLOR)\n"
 
+
+$(BONUS_NAME)		: $(BONUS_OBJ_DIR) $(BONUS_OBJS)
+					@$(CC) $(CFLAGS) $(BONUS_OBJS) -o $(BONUS_NAME)
+					@echo "\n$(PINK)[ＯＫ✔]  ➤➤  $(GREEN)Executable $(BONUS_NAME) created$(DEF_COLOR)\n"
+
 $(OBJ_DIR)			:
 					@mkdir -p $(OBJ_DIR)
+
+$(BONUS_OBJ_DIR)	:
+					@mkdir -p $(BONUS_OBJ_DIR)
 
 $(OBJ_DIR)/%.o		: $(SRC_DIR)/%.c $(HEADER) Makefile | $(OBJ_DIR)
 					@$(CC) $(CFLAGS) -c $< -o $@
 					@echo "\n$(PINK)[ＯＫ✔]		➤➤		$(GREEN)Compiled $< into $@$(DEF_COLOR)\n"
 
+$(BONUS_OBJ_DIR)/%.o: $(BONUS_SRC_DIR)/%.c $(BONUS_HEADER) Makefile | $(BONUS_OBJ_DIR)
+					@$(CC) $(CFLAGS) -c $< -o $@
+					@echo "\n$(PINK)[ＯＫ✔]  ➤➤  $(GREEN)Compiled $< into $@$(DEF_COLOR)\n"
+
 clean				:
-					@rm -rf $(OBJ_DIR)
+					@rm -rf $(OBJ_DIR) $(BONUS_OBJ_DIR)
 					@echo "\n$(PINK)[ＯＫ✔]		➤➤		$(GREEN)Cleaned up object$(DEF_COLOR)\n"
 
 fclean				: clean
-					@rm -f $(NAME)
+					@rm -f $(NAME) $(BONUS_NAME)
 					@echo "\n$(PINK)[ＯＫ✔]		➤➤		$(GREEN)All executables and objects removed$(DEF_COLOR)\n"
 
 re					: fclean all

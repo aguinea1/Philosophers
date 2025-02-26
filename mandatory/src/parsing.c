@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:34:39 by aguinea           #+#    #+#             */
-/*   Updated: 2025/02/11 10:21:55 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/02/24 11:30:55 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,10 @@ static int	int_limit(int ac, char **av)
 	return (1);
 }
 
-int	parsing(int	ac, char **arg)
+int	parsing(int ac, char **arg)
 {
+	if (ft_atoi(arg[1]) > 200)
+		return (printf("TOO MUCH PHILOS\n"), 0);
 	if (!type_of_arg(ac, arg) || !int_limit(ac, arg))
 		return (printf("%s", WRONG_ARGS), 0);
 	return (1);

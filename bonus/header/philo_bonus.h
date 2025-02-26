@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/10 09:41:55 by aguinea           #+#    #+#             */
-/*   Updated: 2025/02/25 16:41:44 by aguinea          ###   ########.fr       */
+/*   Created: 2025/02/25 16:42:16 by aguinea           #+#    #+#             */
+/*   Updated: 2025/02/25 16:53:18 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
-// LIBS
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
@@ -22,6 +21,9 @@
 # include <sys/time.h>
 # include <limits.h>
 # include <stdbool.h>
+
+# define MALLOC_ERR "[philo bonus] Error: Memory allocation failed\n"
+# define SEM_ERR "[philo bonus] Error: Semaphore creation failed\n"
 
 // COLORS
 # define RED "\033[1;31m"
@@ -32,12 +34,6 @@
 # define CYAN "\033[1;36m"
 # define RESET "\033[0m"
 
-// ERRORS
-# define WRONG_ARGS "Invalid args\n"
-# define E_MALLOC "Error with malloc\n"
-# define E_MTX "Error with mutex\n"
-# define E_THREAD "Error with thread creation\n"
-
 enum
 {
 	EAT,
@@ -47,12 +43,10 @@ enum
 	FORK,
 };
 
-typedef pthread_mutex_t	t_mtx;
-
 typedef struct s_philo
 {
+	pid_t			pid;
 	int				id;
-	t_mtx			meal_flag;
 	t_mtx			r_fork;
 	t_mtx			*l_fork;
 	bool			dead;
@@ -78,27 +72,5 @@ typedef struct s_table
 	t_philo	*philo;
 }	t_table;
 
-//INIT PHILO
-int		parsing(int ac, char **arg);
-int		ft_atoi(const char *nptr);
 
-//INIT SIMULATION
-void	print_status(t_philo *philo, int flag);
-void	*monitor(void *data);
-void	*routine(void *philo);
-void	what_is_the_flag(t_philo *philo, int flag);
-
-//ACTIONS
-void	think(t_philo *philo);
-void	eat(t_philo *philo);
-void	eat_lonely(t_philo *philo);
-void	sleep_act(t_philo *philo);
-
-//UTILS
-void	do_usleep(long ms);
-bool	is_it_dead(t_philo *philo);
-long	elapsed_time(t_philo *philo);
-long	get_time_ms(void);
-void	ft_error(char *error_str, void *var);
-void	destroy_mutex(t_table *table);
 #endif

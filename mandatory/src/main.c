@@ -6,29 +6,37 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:27:55 by aguinea           #+#    #+#             */
-/*   Updated: 2025/02/23 22:48:26 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/02/24 14:57:01 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philo.h"
 
-static  void	init_sim(t_table *table)
+static void	init_sim(t_table *table)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	if (table->num_eat == 0)
-		return;
+		return ;
+	pthread_mutex_lock(&table->table_mtx);
 	while (table->num_philo > ++i)
-		pthread_create(&table->philo[i].thread, NULL, &routine, &table->philo[i]);
+	{
+		if (pthread_create(&table->philo[i].thread, NULL,
+				&routine, &table->philo[i]))
+		{
+			ft_error(E_THREAD, NULL);
+		}
+	}
+	pthread_mutex_unlock(&table->table_mtx);
 	i = -1;
 	while (++i < table->num_philo)
-        pthread_join(table->philo[i].thread, NULL);
+		pthread_join(table->philo[i].thread, NULL);
 }
 
 static int	prep_sim(t_table *table)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	table->philo = malloc(sizeof(t_philo) * table->num_philo);
@@ -45,15 +53,14 @@ static int	prep_sim(t_table *table)
 		table->philo[i].last_meal = 0;
 		table->philo[i].n_meal = 0;
 		table->philo[i].table = table;
-		if(pthread_mutex_init(&table->philo[i].r_fork, NULL))
+		if (pthread_mutex_init(&table->philo[i].r_fork, NULL))
 			ft_error(E_MTX, NULL);
 		if (table->philo[i].id != 1)
 			table->philo[i].l_fork = &table->philo[i - 1].r_fork;
 	}
 	if (table->num_philo > 1)
 		table->philo[0].l_fork = &table->philo[i - 1].r_fork;
-	table->sim_start = get_time_ms();
-	return (0);
+	return (table->sim_start = get_time_ms(), 0);
 }
 
 static void	init_struct(t_table *table, char **av)
@@ -69,26 +76,27 @@ static void	init_struct(t_table *table, char **av)
 	if (av[5])
 		table->num_eat = ft_atoi(av[5]);
 }
-	
-void destroy_mutex(t_table *table)
+
+void	destroy_mutex(t_table *table)
 {
-    int i;
+	int	i;
 
 	i = 0;
-	//pthread_mutex_unlock(&table->table_mtx);
 	pthread_mutex_destroy(&table->table_mtx);
-    pthread_mutex_destroy(&table->print_mtx);
-    while (i < table->num_philo)
-    {
-        pthread_mutex_destroy(&table->philo[i].meal_flag);
-        pthread_mutex_destroy(&table->philo[i].r_fork);
-        i++;
-    }
+	pthread_mutex_destroy(&table->print_mtx);
+	while (i < table->num_philo)
+	{
+		pthread_mutex_destroy(&table->philo[i].meal_flag);
+		pthread_mutex_destroy(&table->philo[i].r_fork);
+		i++;
+	}
 }
-int main(int ac, char **av)
+
+int	main(int ac, char **av)
 {
-	t_table table;
+	t_table		table;
 	pthread_t	monitor_th;
+
 	if (ac >= 5 && ac <= 6)
 	{
 		if (!parsing(ac, av))
@@ -103,7 +111,7 @@ int main(int ac, char **av)
 	prep_sim(&table);
 	pthread_create(&monitor_th, NULL, monitor, &table);
 	init_sim(&table);
-    pthread_join(monitor_th, NULL);
+	pthread_join(monitor_th, NULL);
 	destroy_mutex(&table);
 	free(table.philo);
 	return (0);
