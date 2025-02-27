@@ -6,24 +6,31 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:42:16 by aguinea           #+#    #+#             */
-/*   Updated: 2025/02/25 16:53:18 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/02/27 16:45:46 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
-# include <stdio.h>
 # include <unistd.h>
-# include <stdlib.h>
+# include <stdio.h>
 # include <pthread.h>
-# include <string.h>
-# include <sys/time.h>
+# include <stdlib.h>
 # include <limits.h>
 # include <stdbool.h>
+# include <sys/time.h>
+# include <sys/wait.h>
+# include <pthread.h>
+# include <semaphore.h>
+# include <signal.h>
+# include <fcntl.h>
+# include <string.h>
 
 # define MALLOC_ERR "[philo bonus] Error: Memory allocation failed\n"
 # define SEM_ERR "[philo bonus] Error: Semaphore creation failed\n"
+# define FORK_ERR "[philo bonus] Error: Fork failed\n"
+# define WRONG_ARGS "[philo bonus] Error: Wrong args\n"
 
 // COLORS
 # define RED "\033[1;31m"
@@ -45,14 +52,11 @@ enum
 
 typedef struct s_philo
 {
-	pid_t			pid;
 	int				id;
-	t_mtx			r_fork;
-	t_mtx			*l_fork;
+	pid_t	pid;
 	bool			dead;
 	long			last_meal;
 	int				n_meal;
-	pthread_t		thread;
 	struct s_table	*table;
 }	t_philo;
 
@@ -64,13 +68,34 @@ typedef struct s_table
 	int		tt_eat;
 	int		tt_sleep;
 	int		num_eat;
-	t_mtx	table_mtx;
-	t_mtx	print_mtx;
 	bool	philo_dead;
 	bool	all_meals;
 	long	sim_start;
+	sem_t	*forks_sem;
+	sem_t	*death_sem;
+	sem_t	*print_sem;
+	sem_t	*table_sem;
 	t_philo	*philo;
 }	t_table;
 
-
+void	*monitor(void	*data);
+void	sleep_act(t_philo *philo);
+void	eat(t_philo *philo);
+void	think(t_philo *philo);
+void	print_status(t_philo *philo, int flag);
+void	what_is_the_flag(t_philo *philo, int flag);
+void	do_usleep(long ms);
+bool	is_it_dead(t_philo *philo);
+long	elapsed_time(t_philo *philo);
+long	get_time_ms(void);
+void	*routine(t_philo *philo);
+void	ft_error(char *error_str, void *var);
+int		parsing(int ac, char **arg);
+int		ft_atoi(const char *nptr);
+void	fork_act(t_philo *philo);
+void	prep_sim(t_table *table);
+void	init_struct(t_table *table, char **av);
+bool	init_sems(t_table *table);
+void	init_sim(t_table *table);
+void	eat_lonely(t_philo *philo);
 #endif

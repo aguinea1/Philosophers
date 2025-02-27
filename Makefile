@@ -6,7 +6,7 @@
 #    By: aguinea <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 10:28:53 by aguinea           #+#    #+#              #
-#    Updated: 2025/02/25 14:03:18 by aguinea          ###   ########.fr        #
+#    Updated: 2025/02/27 09:37:23 by aguinea          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ NAME 			= philo
 BONUS_NAME		= process
 
 CC 				= cc
-CFLAGS 			= -Wall -Werror -Wextra -g -pthread -fsanitize=thread
+CFLAGS 			= -Wall -Werror -Wextra -g -pthread -fsanitize=address
 
 MAKE_LIB 		= ar -rcs
 
@@ -81,7 +81,14 @@ SRCS 			= $(SRC_DIR)/main.c						\
 				  $(SRC_DIR)/simulation.c				\
 				  $(SRC_DIR)/phil_actions.c
 
-BONUS_SRCS      = $(BONUS_SRC_DIR)/main.c      \
+BONUS_SRCS      = $(BONUS_SRC_DIR)/main.c				\
+				  $(BONUS_SRC_DIR)/prints.c					\
+				  $(BONUS_SRC_DIR)/utils.c					\
+				  $(BONUS_SRC_DIR)/monitor.c					\
+				  $(BONUS_SRC_DIR)/simulation.c				\
+				  $(BONUS_SRC_DIR)/phil_actions.c	\
+				  $(BONUS_SRC_DIR)/exit.c			\
+				  $(BONUS_SRC_DIR)/parsing.c
 
 
 OBJS 			= $(patsubst %.c,$(OBJ_DIR)/%.o,$(notdir $(SRCS)))
