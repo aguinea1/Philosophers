@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:16:55 by aguinea           #+#    #+#             */
-/*   Updated: 2025/03/09 23:05:50 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/10 10:50:56 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,8 @@ void	what_is_the_flag(t_philo *philo, int flag)
 {
 	char	*status;
 
-
 	if (philo->table->philo_dead == true)
-	{
 		return ;
-	}
 	if (flag == EAT)
 	{
 		status = "is eating";
@@ -59,4 +56,3 @@ void	print_status(t_philo *philo, int flag)
 	what_is_the_flag(philo, flag);
 	sem_post(philo->table->print_sem);
 }
-

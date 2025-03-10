@@ -6,39 +6,22 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:44:35 by aguinea           #+#    #+#             */
-/*   Updated: 2025/03/10 10:20:39 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/10 10:47:40 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philo_bonus.h"
 
-static void ph_end_processes(t_table *table)
-{
-    int i;
-
-    i = 0;
-    while (i < table->num_philo)
-    {
-        if (table->philo[i].pid > 0)
-        {
-            kill(table->philo[i].pid, SIGKILL);
-        }
-        i++;
-    }
-}
-
-
 int	init_sim(t_table *table)
 {
 	int	i;
 
-	i = 0;	
+	i = 0;
 	while (i < table->num_philo)
 	{
 		table->philo[i].pid = fork();
 		if (table->philo[i].pid == 0)
 		{
-			//table->philo[i].next_meal = get_time_ms() + 1000 + table->tt_die;
 			routine(&table->philo[i]);
 			exit(0);
 		}
@@ -102,7 +85,7 @@ void	init_struct(t_table *table, char **av)
 	table->max_meals = table->num_eat * table->num_philo;
 }
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	t_table	table;
 

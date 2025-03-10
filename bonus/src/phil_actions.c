@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:39:18 by aguinea           #+#    #+#             */
-/*   Updated: 2025/03/10 10:31:48 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/10 10:49:48 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,7 @@ void	think(t_philo *philo)
 {
 	print_status(philo, THINK);
 }
-/*
-void	eat(t_philo *philo)
-{
-	sem_wait(philo->table->forks_sem);
-	print_status(philo, FORK);
-	sem_wait(philo->table->forks_sem);
-	print_status(philo, FORK);
-	sem_wait(philo->table->death_sem);
-	philo->last_meal = get_time_ms();
-	philo->next_meal = philo->last_meal + (unsigned int)philo->table->tt_die;
-	philo->table->n_meal++;
-	sem_post(philo->table->death_sem);
-	print_status(philo, EAT);
-	usleep((philo->table->tt_eat) * 1000);
-	sem_post(philo->table->forks_sem);
-	sem_post(philo->table->forks_sem);
-}
-*/
+
 void	eat(t_philo *philo)
 {
 	sem_wait(philo->table->forks_sem);
@@ -54,44 +37,12 @@ void	eat(t_philo *philo)
 	sem_post(philo->table->forks_sem);
 	sem_post(philo->table->forks_sem);
 }
-/*
-void	eat(t_philo *philo)
-{
-	fork_act(philo);
-	sem_wait(philo->table->table_sem);
-	philo->last_meal = elapsed_time(philo);
-	philo->n_meal++;
-	sem_post(philo->table->table_sem);
-	print_status(philo, EAT);
-	usleep(philo->table->tt_eat * 1000);
-	sem_post(philo->table->forks_sem);
-	sem_post(philo->table->forks_sem);
-}
-*/
+
 void	sleep_act(t_philo *philo)
 {
 	print_status(philo, SLEEP);
 	usleep(philo->table->tt_sleep * 1000);
 }
-/*
-void	fork_act(t_philo *philo)
-{
-	if (philo->id % 2 == 0)
-	{
-		sem_wait(philo->table->forks_sem);
-		print_status(philo, FORK);
-		sem_wait(philo->table->forks_sem);
-		print_status(philo, FORK);
-	}
-	else
-	{
-		usleep(1000);
-		sem_wait(philo->table->forks_sem);
-		print_status(philo, FORK);
-		sem_wait(philo->table->forks_sem);
-		print_status(philo, FORK);
-	}
-}*/
 
 void	eat_lonely(t_philo *philo)
 {
@@ -103,7 +54,8 @@ void	eat_lonely(t_philo *philo)
 		print_status(philo, FORK);
 		sem_wait(philo->table->death_sem);
 		philo->last_meal = get_time_ms();
-		philo->next_meal = philo->last_meal + (unsigned int)philo->table->tt_die;
+		philo->next_meal = philo->last_meal
+			+ (unsigned int)philo->table->tt_die;
 		philo->table->n_meal++;
 		sem_post(philo->table->death_sem);
 		print_status(philo, EAT);

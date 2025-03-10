@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:42:16 by aguinea           #+#    #+#             */
-/*   Updated: 2025/03/09 23:39:12 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/10 10:51:43 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ enum
 typedef struct s_philo
 {
 	int				id;
-	pid_t	pid;
+	pid_t			pid;
 	bool			dead;
 	long			last_meal;
 	unsigned int	next_meal;
@@ -105,4 +105,5 @@ void	init_struct(t_table *table, char **av);
 bool	init_sems(t_table *table);
 int		init_sim(t_table *table);
 void	eat_lonely(t_philo *philo);
+void	ph_end_processes(t_table *table);
 #endif
