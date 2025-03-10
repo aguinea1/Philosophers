@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:42:16 by aguinea           #+#    #+#             */
-/*   Updated: 2025/02/27 16:45:46 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/09 23:39:12 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@
 # define CYAN "\033[1;36m"
 # define RESET "\033[0m"
 
+typedef pthread_mutex_t	t_mtx;
+
 enum
 {
 	EAT,
@@ -56,18 +58,21 @@ typedef struct s_philo
 	pid_t	pid;
 	bool			dead;
 	long			last_meal;
-	int				n_meal;
+	unsigned int	next_meal;
 	struct s_table	*table;
 }	t_philo;
 
 typedef struct s_table
 {
+	t_mtx	all;
 	int		num_philo;
 	int		full_philos;
 	int		tt_die;
 	int		tt_eat;
 	int		tt_sleep;
 	int		num_eat;
+	int		n_meal;
+	int		max_meals;
 	bool	philo_dead;
 	bool	all_meals;
 	long	sim_start;
@@ -75,7 +80,9 @@ typedef struct s_table
 	sem_t	*death_sem;
 	sem_t	*print_sem;
 	sem_t	*table_sem;
+	sem_t	*finish;
 	t_philo	*philo;
+
 }	t_table;
 
 void	*monitor(void	*data);
@@ -96,6 +103,6 @@ void	fork_act(t_philo *philo);
 void	prep_sim(t_table *table);
 void	init_struct(t_table *table, char **av);
 bool	init_sems(t_table *table);
-void	init_sim(t_table *table);
+int		init_sim(t_table *table);
 void	eat_lonely(t_philo *philo);
 #endif

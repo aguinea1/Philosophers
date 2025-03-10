@@ -6,12 +6,12 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:08:41 by aguinea           #+#    #+#             */
-/*   Updated: 2025/02/27 15:11:32 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/10 00:56:46 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../header/philo_bonus.h"
-
+/*
 static int	check_meal_count(t_philo *philo, int *flag_meals, t_table *table)
 {
 	if (philo->n_meal == table->num_eat)
@@ -22,37 +22,36 @@ static int	check_meal_count(t_philo *philo, int *flag_meals, t_table *table)
 }
 
 static int	check_death(t_philo *philo, t_table *table)
-{
-	if (is_it_dead(philo))
+{	
+	if (table->philo_dead == true)
 	{
-		sem_wait(table->print_sem);
-		printf(RED "%-6ld %d died\n" RESET, get_time_ms(), philo->id);
-		sem_post(table->print_sem);
-		return (1);
+		return (print_status(philo, DIE), 1);
 	}
 	return (0);
 }
-
+*/
 void	*monitor(void	*data)
 {
-	t_table	*table;
-	int		i;
-	int		flag_meals;
+	t_philo	*philo;
 
-
-	table = (t_table *)data;
+	philo = (t_philo *)data;
 	while (1)
 	{
-		i = -1;
-		flag_meals = 0;
-		while (++i < table->num_philo)
-		{
-			if (check_meal_count(&table->philo[i], &flag_meals, table))
-				return (NULL);
-			if (check_death(&table->philo[i], table))
-				return (NULL);
+		sem_wait(philo->table->death_sem);
+		if (philo->next_meal < get_time_ms())
+		{	
+			printf(RED "%-6ld %d %s\n" RESET, get_time_ms(), philo->id, "died");
+			sem_post(philo->table->finish);
+			return (NULL);
 		}
-		usleep(1000);
+		sem_post(philo->table->death_sem);
+		sem_wait(philo->table->death_sem);
+		if ((philo->table->num_eat != -1) && (philo->table->n_meal * philo->table->num_philo >= philo->table->max_meals))
+		{
+			sem_post(philo->table->finish);
+			return (NULL);
+		}
+			sem_post(philo->table->death_sem);
 	}
 	return (NULL);
 }
