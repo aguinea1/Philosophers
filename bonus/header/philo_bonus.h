@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:42:16 by aguinea           #+#    #+#             */
-/*   Updated: 2025/03/10 10:51:43 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/13 19:51:32 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_philo
 	long			last_meal;
 	unsigned int	next_meal;
 	struct s_table	*table;
+	int				n_meal;
 }	t_philo;
 
 typedef struct s_table
@@ -71,7 +72,7 @@ typedef struct s_table
 	int		tt_eat;
 	int		tt_sleep;
 	int		num_eat;
-	int		n_meal;
+	int		meal;
 	int		max_meals;
 	bool	philo_dead;
 	bool	all_meals;
@@ -79,8 +80,10 @@ typedef struct s_table
 	sem_t	*forks_sem;
 	sem_t	*death_sem;
 	sem_t	*print_sem;
-	sem_t	*table_sem;
+	sem_t	*start_sem;
 	sem_t	*finish;
+	int		start;
+	int		i;
 	t_philo	*philo;
 
 }	t_table;

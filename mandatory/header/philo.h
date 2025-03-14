@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:41:55 by aguinea           #+#    #+#             */
-/*   Updated: 2025/02/25 16:41:44 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/10 12:54:19 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	what_is_the_flag(t_philo *philo, int flag);
 //ACTIONS
 void	think(t_philo *philo);
 void	eat(t_philo *philo);
-void	eat_lonely(t_philo *philo);
+int		eat_lonely(t_philo *philo);
 void	sleep_act(t_philo *philo);
 
 //UTILS

@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 15:13:08 by aguinea           #+#    #+#             */
-/*   Updated: 2025/02/24 14:56:18 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/10 12:57:27 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	*monitor(void *data)
 	int		flag_meals;
 
 	table = (t_table *)data;
+	if (table->num_philo == 1)
+		return (NULL);
 	while (1)
 	{
 		i = -1;

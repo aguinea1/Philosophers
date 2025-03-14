@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 09:16:02 by aguinea           #+#    #+#             */
-/*   Updated: 2025/02/24 15:16:29 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/10 12:55:35 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void	*routine(void *data)
 	while (philo->n_meal != philo->table->num_eat && !is_it_dead(philo))
 	{
 		if (check_eat(philo))
-			eat_lonely(philo);
+		{
+			if (!eat_lonely(philo))
+				return (NULL);
+		}
 		else
 			break ;
 		if (check_other(philo))

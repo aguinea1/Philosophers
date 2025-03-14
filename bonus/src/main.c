@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -6,7 +7,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:44:35 by aguinea           #+#    #+#             */
-/*   Updated: 2025/03/10 10:47:40 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/10 17:14:02 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +27,10 @@ int	init_sim(t_table *table)
 			exit(0);
 		}
 		i++;
-		usleep(100);
 	}
+	table->sim_start = get_time_ms();
+	for (i = 0; i < table->num_philo; i++)
+        sem_post(table->start_sem);
 	return (1);
 }
 
@@ -35,17 +38,17 @@ bool	init_sems(t_table *table)
 {
 	sem_unlink("death");
 	sem_unlink("print");
-	sem_unlink("table");
+	sem_unlink("start");
 	sem_unlink("forks");
 	sem_unlink("finish");
 	table->death_sem = sem_open("death", O_CREAT, 0600, 1);
 	table->print_sem = sem_open("print", O_CREAT, 0600, 1);
-	table->table_sem = sem_open("table", O_CREAT, 0600, 1);
+	table->start_sem = sem_open("start", O_CREAT, 0644, 0);
 	table->finish = sem_open("finish", O_CREAT, 0600, 1);
 	table->forks_sem = sem_open("forks", O_CREAT, 0600,
 			table->num_philo);
 	if (table->death_sem == SEM_FAILED || table->print_sem == SEM_FAILED
-		|| table->table_sem == SEM_FAILED || table->forks_sem == SEM_FAILED)
+		|| table->start_sem == SEM_FAILED || table->forks_sem == SEM_FAILED)
 		return (false);
 	return (true);
 }
@@ -65,6 +68,7 @@ void	prep_sim(t_table *table)
 		table->philo[i].last_meal = 0;
 		table->philo[i].pid = -1;
 		table->philo[i].table = table;
+		table->philo[i].n_meal = 0;
 	}
 	return ;
 }
@@ -79,10 +83,11 @@ void	init_struct(t_table *table, char **av)
 	table->all_meals = false;
 	table->num_eat = -1;
 	table->full_philos = 0;
-	table->n_meal = 0;
+	table->meal = 0;
+	table->start = 0;
 	if (av[5])
 		table->num_eat = ft_atoi(av[5]);
-	table->max_meals = table->num_eat * table->num_philo;
+	table->max_meals = table->num_eat;
 }
 
 int	main(int ac, char **av)
@@ -101,7 +106,6 @@ int	main(int ac, char **av)
 	}
 	init_struct(&table, av);
 	prep_sim(&table);
-	table.sim_start = get_time_ms();
 	init_sems(&table);
 	sem_wait(table.finish);
 	init_sim(&table);
