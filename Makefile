@@ -6,7 +6,7 @@
 #    By: aguinea <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/10 10:28:53 by aguinea           #+#    #+#              #
-#    Updated: 2025/03/13 20:11:58 by aguinea          ###   ########.fr        #
+#    Updated: 2025/03/14 18:18:49 by aguinea          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ NAME 			= philo
 BONUS_NAME		= process
 
 CC 				= cc
-CFLAGS 			= -Wall -Werror -Wextra -g -pthread -fsanitize=thread
+CFLAGS 			= -Wall -Werror -Wextra -g -pthread -fsanitize=address
 
 MAKE_LIB 		= ar -rcs
 

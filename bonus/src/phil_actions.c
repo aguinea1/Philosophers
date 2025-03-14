@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:39:18 by aguinea           #+#    #+#             */
-/*   Updated: 2025/03/13 20:17:55 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/14 18:01:36 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	eat(t_philo *philo)
 	sem_wait(philo->table->forks_sem);
 	print_status(philo, FORK);
 	if (!(philo->next_meal * 0.5 > get_time_ms()))
-		usleep(100);
+		usleep(10);
 	sem_wait(philo->table->forks_sem);
 	print_status(philo, FORK);
 	print_status(philo, EAT);

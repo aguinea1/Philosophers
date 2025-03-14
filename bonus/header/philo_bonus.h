@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:42:16 by aguinea           #+#    #+#             */
-/*   Updated: 2025/03/13 19:51:32 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/14 17:38:21 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_table
 	sem_t	*start_sem;
 	sem_t	*finish;
 	int		start;
+	int		num_meal;
 	int		i;
 	t_philo	*philo;
 

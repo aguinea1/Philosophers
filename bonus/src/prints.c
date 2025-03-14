@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:16:55 by aguinea           #+#    #+#             */
-/*   Updated: 2025/03/10 10:50:56 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/14 18:14:40 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static void	what_is_the_flag1(t_philo *philo, int flag)
 	else if (flag == SLEEP)
 	{
 		status = "is sleeping";
+		if (philo->n_meal == philo->table->max_meals)return;
 		printf(MAGENTA "%-6ld %d %s\n" RESET, get_time_ms(), philo->id, status);
 	}
 	return ;

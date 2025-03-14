@@ -85,6 +85,8 @@ void	init_struct(t_table *table, char **av)
 	table->full_philos = 0;
 	table->meal = 0;
 	table->start = 0;
+	table->num_meal = 0;
+	table->i = 0;
 	if (av[5])
 		table->num_eat = ft_atoi(av[5]);
 	table->max_meals = table->num_eat;
