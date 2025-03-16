@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:44:35 by aguinea           #+#    #+#             */
-/*   Updated: 2025/03/10 17:14:02 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/16 19:52:25 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +28,9 @@ int	init_sim(t_table *table)
 		i++;
 	}
 	table->sim_start = get_time_ms();
-	for (i = 0; i < table->num_philo; i++)
-        sem_post(table->start_sem);
+	i = -1;
+	while (++i < table->num_philo)
+		sem_post(table->start_sem);
 	return (1);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aguinea <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 14:45:48 by aguinea           #+#    #+#             */
-/*   Updated: 2025/03/14 18:23:16 by aguinea          ###   ########.fr       */
+/*   Updated: 2025/03/16 19:57:55 by aguinea          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,14 @@ void	*routine(t_philo *philo)
 		eat_lonely(philo);
 		if (philo->table->num_philo % 2 != 0 && philo->id % 2 != 0)
 		{
-				if (philo->n_meal == philo->table->max_meals)
-				{
-						usleep(philo->table->tt_eat);
-						sem_post(philo->table->finish);
-				}
+			if (philo->n_meal == philo->table->max_meals)
+			{
+				usleep(philo->table->tt_eat);
+				sem_post(philo->table->finish);
+			}
 		}
 		sleep_act(philo);
 		think(philo);
 	}
 	return (NULL);
 }
-
